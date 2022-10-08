@@ -1,0 +1,92 @@
+<!-- CSE201
+Longze Li
+PiecePlacement -->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>PiecePlacement</title>
+	</head>
+	<body>
+		<canvas id="chess" width="450px" height="450px" style="background-color: green;"></canvas>
+		<div>
+			<button id="restart">Restart</button>
+		</div>
+
+
+		<script type="text/javascript" charset="utf-8">
+			var over = false;
+			var player1 = true;
+			var chessBoard = []; //game board
+			for (var i = 0; i < 15; i++) {
+				chessBoard[i] = [];
+				for (var j = 0; j < 15; j++) {
+					chessBoard[i][j] = 0;
+				}
+			}
+
+			var chess = document.getElementById("chess");
+			var context = chess.getContext('2d');
+			context.strokeStyle = '#000000'; //context color
+			window.onload = function() {
+				drawChessBoard(); // draw the board
+			}
+			//restart button
+			document.getElementById("restart").onclick = function() {
+				window.location.reload();
+			}
+			//place pieces
+			chess.onclick = function(e) {
+				//catch the click
+				var x = e.offsetX;
+				var y = e.offsetY;
+				var i = Math.floor(x / 30);
+				var j = Math.floor(y / 30);
+				//If not piece already here
+				if (chessBoard[i][j] == 0) {
+					//place a player's piece
+					oneStep(i, j, player1);
+					chessBoard[i][j] = 1; //occupy this place
+					//turn changed
+					if (player1) {
+						player1 = false;
+					} else {
+						player1 = true;
+					}
+				}
+
+			}
+
+			//The function to draw chess board 
+			var drawChessBoard = function() {
+				for (var i = 0; i < 15; i++) {
+					context.moveTo(15 + i * 30, 15);
+					context.lineTo(15 + i * 30, 435);
+					context.stroke();
+					context.moveTo(15, 15 + i * 30);
+					context.lineTo(435, 15 + i * 30);
+					context.stroke();
+				}
+			}
+
+			//The function to draw a piece
+			var oneStep = function(i, j, player1) {
+				context.beginPath();
+				context.arc(15 + i * 30, 15 + j * 30, 13, 0, 2 * Math.PI); // draw a circle
+				context.closePath();
+				//use gradient to make pieces looks better
+				var gradient = context.createRadialGradient(15 + i * 30 + 2, 15 + j * 30 - 2, 13, 15 + i * 30 + 2, 15 + j *
+					30 - 2, 0);
+				if (player1) {
+					gradient.addColorStop(0, '#0a0a0a');
+					gradient.addColorStop(1, '#8e8e8e');
+				} else {
+					gradient.addColorStop(0, '#d1d1d1');
+					gradient.addColorStop(1, '#f9f9f9');
+				}
+				context.fillStyle = gradient;
+				context.fill();
+			}
+		</script>
+	</body>
+</html>
