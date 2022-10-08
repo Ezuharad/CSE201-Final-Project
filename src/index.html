@@ -2,16 +2,18 @@
 <html lang="en-US">
     <head>
         <meta charset="utf-8"/>
+        <link rel="stylesheet" type="text/css" href="styles//styles.css">
         <script src="js//gameUtils.js"></script>
         <title>Boardgame Page</title>
     </head>
-    <body>
+    <body onload="generateBoard()">
         <h1>
             Wuziqi main page.
         </h1>
         <a href="gameManual.html">Game Manual</a> 
         <br>
-        <!--Add any styling you want to this game-board div, we're trying to generate the gameboard with a JS function-->
+        <!--Add any styling you want to this game-board div or the JS generateBoard() 
+            function; we're trying to generate the gameboard there-->
         <div id="game-board"> 
             <button type="button" onclick="placePiece()"></button>
         </div>
