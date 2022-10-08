@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
-        <meta charset="utf-8" />
+        <meta charset="utf-8"/>
+        <script src="js//gameUtils.js"></script>
         <title>Boardgame Page</title>
     </head>
     <body>
         <h1>
             Wuziqi main page.
         </h1>
-        <a href="file:///C:/Users/Shaobo/Documents/GitHub/CSE201-Final-Project/src/gameManual.html">Game Manual</a> 
+        <a href="gameManual.html">Game Manual</a> 
         <br>
+        <!--Add any styling you want to this game-board div, we're trying to generate the gameboard with a JS function-->
+        <div id="game-board"> 
+            <button type="button" onclick="placePiece()"></button>
+        </div>
     </body>
 </html>
