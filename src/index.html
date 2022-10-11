@@ -11,10 +11,10 @@
                 position: absolute;
                 top: 0;
                 bottom: 0;
-                background: rgb(153, 153, 153);
+                background: rgb(161, 143, 143);
                 width: 100%;
                 height: 100%;
-                opacity: 0.8;
+                opacity: 0.85;
                 z-index: 100;
             }
         
@@ -23,11 +23,11 @@
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                background: #fff;
-                width: 500px;
+                background: rgba(255, 255, 255, 0.938);
+                width: 600px;
                 height: 500px;
-                margin-left: -250px; /*Half the value of width to center div*/
-                margin-top: -250px; /*Half the value of height to center div*/
+                margin-left: -250px;
+                margin-top: -250px;
                 z-index: 200;
             }  
             
@@ -57,15 +57,15 @@
                 <span id="popupclose">X</span>
             </div>
             <div class="popupcontent"> 
-                        <h1 style="text-align:center;font-size:450%;">
-            <b>Game Rules</b>
-        </h1>
-        <p>
-            <b>How to play?</b></br>
-            Players alternate turns placing a stone of their color on an empty intersection of gamed board, and black piece will go first.<br/>
-            <b>How to win?</b></br>
-            The player wins the game if they are able to get five of their pieces in a row (horizontally, vertically, or diagonally) before their timer runs out.</br>
-        </p> 
+                <h1 style="text-align:center;font-size:450%;">
+                    <b>Game Rules</b>
+                </h1>
+                <p>
+                    <b>How to play?</b></br>
+                    Players alternate turns placing a stone of their color on an empty intersection of gamed board, and black piece will go first.<br/>
+                    <b>How to win?</b></br>
+                    The player wins the game if they are able to get five of their pieces in a row (horizontally, vertically, or diagonally) before their timer runs out.</br>
+                </p> 
             </div>
         </div>
         <script type="text/javascript">
@@ -80,7 +80,7 @@
             };
 
             button.onclick = function() {
-	        overlay.style.display = 'block';
+	            overlay.style.display = 'block';
 	        popup.style.display = 'block';
 	        }
         </script>
