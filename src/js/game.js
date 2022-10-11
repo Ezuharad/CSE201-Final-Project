@@ -17,24 +17,11 @@ for (var i = 0; i < 15; i++) {
 	}
 }
 //instance of x, y coordinate of the current preview piece
-var preX = null;
-var preY = null;
-//necessary instances for drawing stuffs on canvas.
-var chess = document.getElementById("chess");
-var context = chess.getContext('2d');
+let preX = null;
+let preY = null;
 
-/**
- * When the page successfully load, it will call the drawChessBoard() to draw a blank game board.
- */
-window.onload = function() {
-	drawChessBoard(); // draw the board
-}
-/**
- * Click the restart button will reload the page and reset the game status.
- */
-document.getElementById("restart").onclick = function() {
-	window.location.reload();
-}
+let chess = null;
+let context = null;
 
 /**
  * This function will automatically called when the user clicks.
@@ -43,16 +30,16 @@ document.getElementById("restart").onclick = function() {
  * 
  * @param {Object} e is the Point clicked by the player's mouse 
  */
-chess.onclick = function(e) {
+function placePiece(e) {
 	//catch the click position
-	var x = e.offsetX;
-	var y = e.offsetY;
+	let x = e.offsetX;
+	let y = e.offsetY;
 	/**
 	 * Transfer the click position to the x, y coordinate of the game board. 
 	 * Inaccurate clicks automatically move to the nearest game board coordinates	
 	*/
-	var i = Math.floor(x / 30);
-	var j = Math.floor(y / 30);
+	let i = Math.floor(x / 30);
+	let j = Math.floor(y / 30);
 	// If not piece already here
 	if (chessBoard[i][j] == 0) {
 		//clean the useless preview pieces before place a new one
@@ -86,6 +73,10 @@ chess.onclick = function(e) {
  * This function will draw a 15*15 blank game board by black lines
  */
 function drawChessBoard() {
+	//necessary instances for drawing stuffs on canvas.
+	chess = document.getElementById("chess");
+	context = chess.getContext('2d');
+
 	context.beginPath();
 	context.strokeStyle = '#000000';
 	for (var i = 0; i < 15; i++) {
@@ -109,7 +100,12 @@ function preStep(i, j, player1) {
 	context.beginPath();
 	context.arc(15 + i * 30, 15 + j * 30, 11, 0, 2 * Math.PI); // draw a preview piece
 	context.closePath();
-	context.strokeStyle = "#ff0000";//set the stroke color
+	if(player1) { // set the stroke color
+		context.strokeStyle = "#8e8e8e";
+	} else {
+		context.strokeStyle = "#f9f9f9";
+	}
+
 	context.stroke();//stroke the preview piece
 	//set the board status to 1 or 2 depend on which player's turn
 	if (player1) {
@@ -132,7 +128,7 @@ function oneStep(i, j, player1) {
 	context.arc(15 + i * 30, 15 + j * 30, 13, 0, 2 * Math.PI); // draw a real piece
 	context.closePath();
 	//use gradient to make pieces looks better
-	var gradient = context.createRadialGradient(15 + i * 30 + 2, 15 + j * 30 - 2, 13, 15 + i * 30 + 2, 15 + j *
+	let gradient = context.createRadialGradient(15 + i * 30 + 2, 15 + j * 30 - 2, 13, 15 + i * 30 + 2, 15 + j *
 		30 - 2, 0);
 	if (player1) {
 		//gradient for black pieces

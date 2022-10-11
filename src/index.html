@@ -2,20 +2,20 @@
 <html lang="en-US">
     <head>
         <meta charset="utf-8"/>
+        <script src="js//game.js"></script>
         <link rel="stylesheet" type="text/css" href="styles//styles.css">
-        <script src="js//gameUtils.js"></script>
         <title>Boardgame Page</title>
     </head>
-    <body onload="generateBoard()">
+    <body onload="drawChessBoard();">
         <h1>
             Wuziqi main page.
         </h1>
         <a href="gameManual.html">Game Manual</a> 
         <br>
-        <!--Add any styling you want to this game-board div or the JS generateBoard() 
-            function; we're trying to generate the gameboard there-->
-        <div id="game-board"> 
-            <button type="button" onclick="placePiece()"></button>
+        
+        <canvas onclick="placePiece(event);" id="chess" width="450px" height="450px" style="background-color: green;"></canvas>
+        <div>
+            <button id="restart" onclick="window.location.reload();">Restart</button>
         </div>
     </body>
 </html>
