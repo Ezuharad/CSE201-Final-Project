@@ -43,13 +43,18 @@
 
 	        #button {
 		        cursor: pointer;
+                background:#0cbbf0;
+                position:absolute;
+                left:800px; 
+                top:100px;
 	        }
         </style> 
     </head>
     <body onload="drawChessBoard();">
         <div id="maincontent">
-            <h1>Wuziqi main page.</h1>
-            <button id="button">Game Manual</button>
+            <h1 style="text-align: center;font-size:300%;">Wuziqi main page</h1>
+            <button id="button" style="font-size:85%;">Game Manual</button>
+            <br>
         </div>
         <div id="overlay"></div>
         <div id="popup">
@@ -68,6 +73,18 @@
                 </p> 
             </div>
         </div>
+
+        <p> Once click the timer, players have 3 minutes to place chess pieces. </p>
+        <button onclick="myFunction()"> Start the timer</button>
+        <br>
+        
+        <script>
+            function myFunction()
+            {
+                setTimeout(function(){alert("Time out!")},180000);
+            }
+        </script>
+
         <script type="text/javascript">
             var closePopup = document.getElementById("popupclose");
             var overlay = document.getElementById("overlay");
@@ -81,12 +98,12 @@
 
             button.onclick = function() {
 	            overlay.style.display = 'block';
-	        popup.style.display = 'block';
+	            popup.style.display = 'block';
 	        }
         </script>
         <!-- <a href="gameManual.html">Game Manual</a> -->
         <br>
-        
+
         <canvas onclick="placePiece(event);" id="chess" width="450px" height="450px" style="background-color: green;"></canvas>
         <div>
             <button id="restart" onclick="window.location.reload();">Restart</button>
