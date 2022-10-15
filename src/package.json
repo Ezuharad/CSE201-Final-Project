@@ -1,0 +1,22 @@
+{
+  "name": "wuziqi",
+  "version": "1.0.0",
+  "description": "CSE201 Final Project",
+  "main": "js/server.js",
+  "scripts": {
+    "app": "node js/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ezuharad/CSE201-Final-Project.git"
+  },
+  "author": "Longze Li, Shaobo Su, Bolin Chen, Steven Chiacchira",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/Ezuharad/CSE201-Final-Project/issues"
+  },
+  "homepage": "https://github.com/Ezuharad/CSE201-Final-Project#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

@@ -1,5 +1,9 @@
-FROM nginx:1.23.1-alpine
-COPY src /usr/share/nginx/html
+FROM node:alpine
+WORKDIR /home/node/app
+COPY src .
 
-# Documentation
-# EXPOSE 80/tcp
+RUN npm install
+CMD npm run app
+
+# Mostly documentation, could be changed
+EXPOSE 9999
