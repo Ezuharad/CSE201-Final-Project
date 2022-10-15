@@ -1,6 +1,20 @@
-const express = require("express")();
+const fs = require("fs");
+const http = require("http");
 const PORT = 9999
 
-express.get("/", (req, res) => res.send("Hello, World!"));
+let gethtml = (req, res) => {
+    res.writeHead(200, {
+        "Content-Type": "text/html"
+    });
+    fs.readFile("." + req.url, null, function(error, data) {
+        if(error) {
+            res.writeHead(404);
+            res.write("Page not found!")
+        } else {
+            res.write(data);
+        }
+        res.end();
+    });
+}
 
-express.listen(PORT, ()=>console.log("Listening on port 9999"));
+http.createServer(gethtml).listen(PORT);
