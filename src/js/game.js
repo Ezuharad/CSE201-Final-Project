@@ -1,7 +1,8 @@
 //instance of Is it player1's turn, true is black turn, and false is white turn.
 var player1 = true;
 //instance of chessBoard status
-var chessBoard = []; 
+var chessBoard = [];
+
 /**
  * Create a Nested Array to record the chessBoard status, all values will set as 0 at the first.
  * 0 means no piece here, 
@@ -37,7 +38,7 @@ function placePiece(e) {
 	/**
 	 * Transfer the click position to the x, y coordinate of the game board. 
 	 * Inaccurate clicks automatically move to the nearest game board coordinates	
-	*/
+	 */
 	let i = Math.floor(x / 30);
 	let j = Math.floor(y / 30);
 	// If not piece already here
@@ -49,13 +50,18 @@ function placePiece(e) {
 		//set the x, y coordinate of the current preview piece
 		preX = i;
 		preY = j;
-		
+
 	} //If there is already a black preview piece here
 	else if (chessBoard[i][j] == 1) {
 		//clean the useless preview piece
 		cleanPre(preX, preY);
 		//place a black piece here
 		oneStep(i, j, player1);
+		//Win judgement
+		if (WinJudge(i, j, player1)) {
+			//This part just use to tese the function
+			alert("Black Win!");
+		}
 		//turn changes
 		player1 = false;
 	} //If there is already a black preview piece here
@@ -64,6 +70,11 @@ function placePiece(e) {
 		cleanPre(preX, preY);
 		//place a white piece here
 		oneStep(i, j, player1);
+		//Win judgement
+		if (WinJudge(i, j, player1)) {
+			//This part just use to tese the function
+			alert("White Win!");
+		}
 		//turn changes
 		player1 = true;
 	}
@@ -100,18 +111,18 @@ function preStep(i, j, player1) {
 	context.beginPath();
 	context.arc(15 + i * 30, 15 + j * 30, 11, 0, 2 * Math.PI); // draw a preview piece
 	context.closePath();
-	if(player1) { // set the stroke color
+	if (player1) { // set the stroke color
 		context.strokeStyle = "#8e8e8e";
 	} else {
 		context.strokeStyle = "#f9f9f9";
 	}
 
-	context.stroke();//stroke the preview piece
+	context.stroke(); //stroke the preview piece
 	//set the board status to 1 or 2 depend on which player's turn
 	if (player1) {
 		chessBoard[i][j] = 1; //if the turn is black, set the board status to 1
 	} else {
-		chessBoard[i][j] = 2;//if the turn is white, set the board status to 2
+		chessBoard[i][j] = 2; //if the turn is white, set the board status to 2
 	}
 }
 
@@ -167,12 +178,12 @@ function cleanPre(X, Y) {
 		if (X == 0) {
 			context.moveTo(X * 30 + 15, Y * 30 + 15);
 			context.lineTo((X + 1) * 30, Y * 30 + 15);
-		} 
+		}
 		//on the right side
 		else if (X == 14) {
 			context.moveTo(X * 30, Y * 30 + 15);
 			context.lineTo((X + 1) * 30 - 15, Y * 30 + 15);
-		} 
+		}
 		//normal
 		else {
 			context.moveTo(X * 30, Y * 30 + 15);
@@ -183,12 +194,12 @@ function cleanPre(X, Y) {
 		if (Y == 0) {
 			context.moveTo(15 + X * 30, Y * 30 + 15);
 			context.lineTo(15 + X * 30, Y * 30 + 30);
-		} 
+		}
 		//on the botton side
 		else if (Y == 14) {
 			context.moveTo(15 + X * 30, Y * 30);
 			context.lineTo(15 + X * 30, Y * 30 + 15);
-		} 
+		}
 		//normal
 		else {
 			context.moveTo(15 + X * 30, Y * 30);
@@ -199,4 +210,111 @@ function cleanPre(X, Y) {
 		preX = null;
 		preY = null;
 	}
+}
+/**
+ * WinJudge function will determine win based on the coordinates of the last piece placement.
+ * With five pieces of the same color on any horizontal, vertical, or diagonal line, the corresponding color wins
+ * 
+ * @param {*} x is the value of the current preview piece x-coordinate
+ * @param {*} y is the value of the current preview piece y-coordinate
+ * @param {*} player1 is which player's turn
+ */
+function WinJudge(x, y, player1) {
+	//count the win 
+	var count = 1;
+	//istance of which color is judged now
+	var color = 3;
+	if (!player1) {
+		color = 4;
+	}
+	//horizontal line judge
+	//count the pieces of the same color to the left of the last piece
+	for (let i = x - 1; i >= x - 4 && i >= 0; i--) {
+		if (color == chessBoard[i][y]) {
+			count++;
+		} else {
+			break;
+		}
+	}
+	//count the pieces of the same color to the right of the last piece
+	for (let i = x + 1; i <= x + 4 && i <= 14; i++) {
+		if (color == chessBoard[i][y]) {
+			count++;
+		} else {
+			break;
+		}
+	}
+	//return true if the count greater or equal than 5
+	if (count >= 5) {
+		return true;
+	}
+
+
+	//vertical line judge
+	count = 1;
+	//count the pieces of the same color to the top of the last piece
+	for (let j = y - 1; j >= y - 4 && j >= 0; j--) {
+		if (color == chessBoard[x][j]) {
+			count++;
+		} else {
+			break;
+		}
+	}
+	//count the pieces of the same color to the bottom of the last piece
+	for (let j = y + 1; j <= y + 4 && j <= 14; j++) {
+		if (color == chessBoard[x][j]) {
+			count++;
+		} else {
+			break;
+		}
+	}
+	//return true if the count greater or equal than 5
+	if (count >= 5) {
+		return true;
+	}
+	//main-diagonal judge(top left to bottom right)
+	count = 1;
+	//count the pieces of the same color to the top left of the last piece
+	for (let i = -1; i >= -4 && x + i >= 0 && j + i >= 0; i--) {
+		if (color == chessBoard[x + i][y + i]) {
+			count++;
+		} else {
+			break;
+		}
+	}
+	//count the pieces of the same color to the bottom right of the last piece
+	for (let i = 1; i <= 4 && x + i <= 14 && y + i <= 14; i++) {
+		if (color == chessBoard[x + i][y + i]) {
+			count++;
+		} else {
+			break;
+		}
+	}
+	if (count >= 5) {
+		return true;
+	}
+	//antidiagonal judge(top right to bottom left)
+	count = 1;
+	//count the pieces of the same color to the top right of the last piece
+	for (let i = 1; i <= 4 && x + i <= 14 && y - i >= 0; i++) {
+		if (color == chessBoard[x + i][y - i]) {
+			count++;
+		} else {
+			break;
+		}
+
+	}
+	//count the pieces of the same color to the bottom left of the last piece
+	for (let i = 1; i <= 4 && x - i >= 0 && y + i <= 14; i++) {
+		if (color == chessBoard[x - i][y + i]) {
+			count++;
+		} else {
+			break;
+		}
+	}
+	if (count >= 5) {
+		return true;
+	}
+	//return false if the count less than 5
+	return false;
 }
