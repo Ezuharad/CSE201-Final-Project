@@ -24,23 +24,18 @@ let preY = null;
 let chess = null;
 let context = null;
 
-setInterval(pullPiece, 2000); //##### DEV #####
+ // Regularly call server for updated pieces
+setInterval(pullPiece, 500);
 
 /**
- * This function will automatically called when the user clicks.
- * The clicked position will be catched, and
- * This function will call preStep() and oneStep() to place preview pieces and real pieces on the game board.
- * 
- * @param {Object} e is the Point clicked by the player's mouse 
+ * This function will be called whenever a player clicks the board to place a piece.
+ * Calls
+ * @param {*} e 
  */
-function placePiece(e) {
-	//catch the click position
+function clickToPlacePiece(e) {
 	let x = e.offsetX;
 	let y = e.offsetY;
-	/**
-	 * Transfer the click position to the x, y coordinate of the game board. 
-	 * Inaccurate clicks automatically move to the nearest game board coordinates	
-	 */
+
 	let i = Math.floor(x / 30);
 	let j = Math.floor(y / 30);
 
@@ -53,12 +48,23 @@ function placePiece(e) {
 		//set the x, y coordinate of the current preview piece
 		preX = i;
 		preY = j;
+	}
+	else if(chessBoard[i][j] == 1 || chessBoard[i][j] == 2){
+		pushPiece(i, j); // Push piece to server
+		cleanPre(preX, preY); // clean the useless preview piece
+		placePiece(i, j);
+	}
+}
 
-	} //If there is already a black preview piece here
-	else if (chessBoard[i][j] == 1) {
-		pushPiece(i, j); // ##### DEV #####
-		//clean the useless preview piece
-		cleanPre(preX, preY);
+/**
+ * This function will call preStep() and oneStep() to place preview pieces and real pieces on the game board.
+ * Called by clickToPlacePiece()
+ * 
+ * @param i is the row of the piece to be placed
+ * @param j is the column of the piece to be placed
+ */
+function placePiece(i, j) {
+	if (player1) {  //If there is already a black preview piece here
 		//place a black piece here
 		oneStep(i, j, player1);
 		//Win judgement
@@ -69,10 +75,7 @@ function placePiece(e) {
 		//turn changes
 		player1 = false;
 	} //If there is already a white preview piece here
-	else if (chessBoard[i][j] == 2) {
-		pushPiece(i, j); // ##### DEV #####
-		//clean the useless preview piece
-		cleanPre(preX, preY);
+	else {
 		//place a white piece here
 		oneStep(i, j, player1);
 		//Win judgement
@@ -85,31 +88,48 @@ function placePiece(e) {
 	}
 }
 
+/**
+ * Pulls a piece from the nodejs server using ajax. Called every half second by the 
+ * client.
+ */
 function pullPiece() {
 	let xhttp = new XMLHttpRequest();
-	xhttp.open('GET', '/pullPiece', true);
-	xhttp.setRequestHeader('Content-type', '')
+	let url = '/pullPiece';  // The GET url
+	xhttp.open('GET', url, true);
 	xhttp.onreadystatechange = function() {
 		if(this.readyState == 4 && this.status == 200) {
-			let pos = this.responseText.split(' ');
-			console.log(this.responseText);
-			oneStep(pos[0], pos[1]);
+			if(pos == null) {
+				return;
+			}
+			// Unpackage the parameters
+			let pos = this.responseText.split('|');
+			
+			// Log that the piece was pulled
+			console.log('Piece pulled: ' + this.responseText);
+
+			// Place the piece for the user to see
+			placePiece(pos[0], pos[1]);
 		}
 	}
 	xhttp.send();
 }
 
+/**
+ * Pushes the passed piece to the nodejs server. Called when a player finishes 
+ * placing a piece.
+ * @param {*} i The x coordinate of the placed piece
+ * @param {*} j The y coordinate of the placed piece
+ */
 function pushPiece(i, j) {
 	let xhttp = new XMLHttpRequest();
-	let url = '/pushPiece';
-	let params = '/' + i + '|' + j;
+	let url = '/pushPiece';  // The POST url
+	let params = '/' + i + '|' + j;  // Parameters are packaged by the client in x|y format
 	xhttp.open('POST', url + params, true);
 	xhttp.onreadystatechange = function() {
 		if(xhttp.readyState == 4 && xhttp.status == 200) {
-			alert(params);
 		}
 	}
-	xhttp.send(params);
+	xhttp.send(params); // Send the xhttp object with the parameters
 }
 
 /**

@@ -10,9 +10,12 @@ const PORT = 9999
 // Grant access to public directory
 app.use(express.static('public'));
 
+/**
+ * pullPiece GET route. Sends the user the data in the data directory.
+ * Throws an error and shuts down the server if an error ocurrs while 
+ * reading the file.
+ */
 app.get('/pullPiece', (req, res) => {
-    let returnData;
-
     fs.readFile(dataDir, 'utf8', function(error, data) {
         if(error) {
             res.sendStatus(500);
@@ -20,18 +23,18 @@ app.get('/pullPiece', (req, res) => {
             console.log(error);
             throw error;
         }
-        console.log('Pulled piece ' + data + '.');
-        returnData = data;
+        res.send(data);
     })
-    res.send(returnData);
 })
 
-// Pushpiece function
+/**
+ * pushPiece POST route. Updates data in the data directory.
+ * Throws an error and shuts down the server if an error ocurrs 
+ * while reading the file.
+ */
 app.post('/pushPiece/:pos', (req, res) => {
-    let pos = req.params.pos.split('|');
-    let i = pos[0];
-    let j = pos[1];
-    fs.writeFile(dataDir, i + ' ' + j, error => {
+    let pos = req.params.pos;
+    fs.writeFile(dataDir, pos, error => {
         if(error) {
             res.sendStatus(500);
             console.log('An error ocurred in pushPiece:');
@@ -39,12 +42,13 @@ app.post('/pushPiece/:pos', (req, res) => {
             throw error;
         }
     })
+    pos = pos.split('|');
 
-    console.log('Piece placed at ' + i + ', ' + j);
-    res.send('Hello!');
+    console.log('Pushed piece to ' + pos[0] + ' ' + pos[1]);
+    res.send(null);
 })
 
-// Start app
+// Start the app on the specified port
 app.listen(PORT, function(error) {
     if(error) {
         console.log(error);
