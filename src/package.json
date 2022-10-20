@@ -2,9 +2,9 @@
   "name": "wuziqi",
   "version": "1.0.0",
   "description": "CSE201 Final Project",
-  "main": "js/server.js",
+  "main": "server.js",
   "scripts": {
-    "app": "node js/server.js"
+    "app": "node server.js"
   },
   "repository": {
     "type": "git",
