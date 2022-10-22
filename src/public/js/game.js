@@ -64,6 +64,9 @@ function clickToPlacePiece(e) {
  * @param j is the column of the piece to be placed
  */
 function placePiece(i, j) {
+	if(chessBoard[i][j] > 2) {
+		return;
+	}
 	if (player1) {  //If there is already a black preview piece here
 		//place a black piece here
 		oneStep(i, j, player1);
@@ -98,9 +101,6 @@ function pullPiece() {
 	xhttp.open('GET', url, true);
 	xhttp.onreadystatechange = function() {
 		if(this.readyState == 4 && this.status == 200) {
-			if(pos == null) {
-				return;
-			}
 			// Unpackage the parameters
 			let pos = this.responseText.split('|');
 			
