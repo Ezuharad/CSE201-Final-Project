@@ -1,7 +1,9 @@
-//instance of Is it player1's turn, true is black turn, and false is white turn.
-var player1 = true;
+//True is black turn, and false is white turn.
+let blackPiece = true;
+// True if it is our turn, false otherwise
+let myTurn;
 //instance of chessBoard status
-var chessBoard = [];
+let chessBoard = [];
 
 /**
  * Create a Nested Array to record the chessBoard status, all values will set as 0 at the first.
@@ -11,9 +13,9 @@ var chessBoard = [];
  * 3 means a black piece here,
  * 4 means a white piece here.
  */
-for (var i = 0; i < 15; i++) {
+for (let i = 0; i < 15; i++) {
 	chessBoard[i] = [];
-	for (var j = 0; j < 15; j++) {
+	for (let j = 0; j < 15; j++) {
 		chessBoard[i][j] = 0;
 	}
 }
@@ -24,7 +26,7 @@ let preY = null;
 let chess = null;
 let context = null;
 
- // Regularly call server for updated pieces
+// Regularly call server for updated pieces
 setInterval(pullPiece, 500);
 
 /**
@@ -44,7 +46,7 @@ function clickToPlacePiece(e) {
 		//clean the useless preview pieces before place a new one
 		cleanPre(preX, preY);
 		//place a new preview piece
-		preStep(i, j, player1);
+		preStep(i, j);
 		//set the x, y coordinate of the current preview piece
 		preX = i;
 		preY = j;
@@ -64,32 +66,30 @@ function clickToPlacePiece(e) {
  * @param j is the column of the piece to be placed
  */
 function placePiece(i, j) {
-	if(chessBoard[i][j] > 2) {
-		return;
-	}
-	if (player1) {  //If there is already a black preview piece here
+	if (blackPiece) {  //If there is already a black preview piece here
 		//place a black piece here
-		oneStep(i, j, player1);
+		oneStep(i, j);
 		//Win judgement
-		if (WinJudge(i, j, player1)) {
+		if (WinJudge(i, j)) {
 			//This part just use to test the function
-			alert("Black Win!");
+			alert("Black Wins!");
 		}
-		//turn changes
-		player1 = false;
+		blackPiece = false;  // Swap color
 	} //If there is already a white preview piece here
 	else {
 		//place a white piece here
-		oneStep(i, j, player1);
+		oneStep(i, j);
 		//Win judgement
-		if (WinJudge(i, j, player1)) {
+		if (WinJudge(i, j)) {
 			//This part just use to tese the function
-			alert("White Win!");
+			alert("White Wins!");
 		}
-		//turn changes
-		player1 = true;
+		blackPiece = true;  // Swap color
 	}
 }
+
+// Regex matching for pullPiece
+const reg = /[0-9]?[0-9]|[0-9]?[0-9]/;
 
 /**
  * Pulls a piece from the nodejs server using ajax. Called every half second by the 
@@ -102,8 +102,21 @@ function pullPiece() {
 	xhttp.onreadystatechange = function() {
 		if(this.readyState == 4 && this.status == 200) {
 			// Unpackage the parameters
+			if(this.responseText == null) {  // Do nothing if the response does not exist
+				return;
+			}
+			if(!this.responseText.match(reg)) {  // Do nothing if the response is malformed
+				return;
+			}
+
 			let pos = this.responseText.split('|');
-			
+			if(pos[0] > 14 || pos[1] > 14 || pos[0] < 0 || pos[1] < 0) {  // Verify indices
+				return;
+			}
+			if(chessBoard[pos[0]][pos[1]] > 2) {  // Do nothing if the piece already exists
+				return;
+			}
+
 			// Log that the piece was pulled
 			console.log('Piece pulled: ' + this.responseText);
 
@@ -142,7 +155,7 @@ function drawChessBoard() {
 
 	context.beginPath();
 	context.strokeStyle = '#000000';
-	for (var i = 0; i < 15; i++) {
+	for (let i = 0; i < 15; i++) {
 		context.moveTo(15 + i * 30, 15);
 		context.lineTo(15 + i * 30, 435);
 		context.moveTo(15, 15 + i * 30);
@@ -157,13 +170,12 @@ function drawChessBoard() {
  * 
  * @param {*} i is the value of the x-coordinate
  * @param {*} j is the value of the y-coordinate
- * @param {*} player1 is which player's turn
  */
-function preStep(i, j, player1) {
+function preStep(i, j) {
 	context.beginPath();
 	context.arc(15 + i * 30, 15 + j * 30, 11, 0, 2 * Math.PI); // draw a preview piece
 	context.closePath();
-	if (player1) { // set the stroke color
+	if (blackPiece) { // set the stroke color
 		context.strokeStyle = "#8e8e8e";
 	} else {
 		context.strokeStyle = "#f9f9f9";
@@ -171,7 +183,7 @@ function preStep(i, j, player1) {
 
 	context.stroke(); //stroke the preview piece
 	//set the board status to 1 or 2 depend on which player's turn
-	if (player1) {
+	if (blackPiece) {
 		chessBoard[i][j] = 1; //if the turn is black, set the board status to 1
 	} else {
 		chessBoard[i][j] = 2; //if the turn is white, set the board status to 2
@@ -184,16 +196,15 @@ function preStep(i, j, player1) {
  * 
  * @param {*} i is the value of the x-coordinate
  * @param {*} j is the value of the y-coordinate
- * @param {*} player1 is which player's turn
  */
-function oneStep(i, j, player1) {
+function oneStep(i, j) {
 	context.beginPath();
 	context.arc(15 + i * 30, 15 + j * 30, 13, 0, 2 * Math.PI); // draw a real piece
 	context.closePath();
 	//use gradient to make pieces looks better
 	let gradient = context.createRadialGradient(15 + i * 30 + 2, 15 + j * 30 - 2, 13, 15 + i * 30 + 2, 15 + j *
 		30 - 2, 0);
-	if (player1) {
+	if (blackPiece) {
 		//gradient for black pieces
 		gradient.addColorStop(0, '#0a0a0a');
 		gradient.addColorStop(1, '#8e8e8e');
@@ -269,14 +280,13 @@ function cleanPre(X, Y) {
  * 
  * @param {*} x is the value of the current preview piece x-coordinate
  * @param {*} y is the value of the current preview piece y-coordinate
- * @param {*} player1 is which player's turn
  */
-function WinJudge(x, y, player1) {
+function WinJudge(x, y) {
 	//count the win 
-	var count = 1;
+	let count = 1;
 	//istance of which color is judged now
-	var color = 3;
-	if (!player1) {
+	let color = 3;
+	if (!blackPiece) {
 		color = 4;
 	}
 	//horizontal line judge
@@ -327,7 +337,7 @@ function WinJudge(x, y, player1) {
 	//main-diagonal judge(top left to bottom right)
 	count = 1;
 	//count the pieces of the same color to the top left of the last piece
-	for (let i = -1; i >= -4 && x + i >= 0 && j + i >= 0; i--) {
+	for (let i = -1; i >= -4 && x + i >= 0 && y + i >= 0; i--) {
 		if (color == chessBoard[x + i][y + i]) {
 			count++;
 		} else {
@@ -354,7 +364,6 @@ function WinJudge(x, y, player1) {
 		} else {
 			break;
 		}
-
 	}
 	//count the pieces of the same color to the bottom left of the last piece
 	for (let i = 1; i <= 4 && x - i >= 0 && y + i <= 14; i++) {

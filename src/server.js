@@ -27,6 +27,9 @@ app.get('/pullPiece', (req, res) => {
     })
 })
 
+// Regex matching for pushPiece
+const reg = /[0-9]?[0-9]|[0-9]?[0-9]/;
+
 /**
  * pushPiece POST route. Updates data in the data directory.
  * Throws an error and shuts down the server if an error ocurrs 
@@ -34,6 +37,21 @@ app.get('/pullPiece', (req, res) => {
  */
 app.post('/pushPiece/:pos', (req, res) => {
     let pos = req.params.pos;
+    if(pos == null) {
+        console.log('A null piece was received in pushPiece');
+        return;
+    }
+    if(!pos.match(reg)) {
+        console.log('A malformed piece was received in pushPiece');
+        return;
+    }
+    
+    let logText = pos.split('|');
+    if(logText[0] > 14 || logText[1] > 14 || logText[0] < 0 || logText[1] < 0) {
+        console.log('A malformed piece was received in pushPiece');
+        return;
+    }
+
     fs.writeFile(dataDir, pos, error => {
         if(error) {
             res.sendStatus(500);
@@ -42,9 +60,8 @@ app.post('/pushPiece/:pos', (req, res) => {
             throw error;
         }
     })
-    pos = pos.split('|');
 
-    console.log('Pushed piece to ' + pos[0] + ' ' + pos[1]);
+    console.log('Pushed piece to ' + logText[0] + ' ' + logText[1]);
     res.send(null);
 })
 
