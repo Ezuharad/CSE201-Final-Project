@@ -45,9 +45,31 @@
 		        cursor: pointer;
                 background:#0cbbf0;
                 position:absolute;
-                left:800px; 
+                left:1700px; 
                 top:100px;
 	        }
+
+            #chess{
+                display: block;
+                margin:50px auto;
+            }
+
+            #restart{
+                display: block;
+                margin:50px auto;
+            }
+
+            #secondtimer{
+                display: inline-flex;
+                align-items: center;
+                font-size: 30px;
+            }
+
+            #countdown{
+                display: inline-flex;
+                align-items: center;
+                font-size: 30px;                
+            }
         </style> 
     </head>
     <body onload="drawChessBoard();">
@@ -74,7 +96,7 @@
             </div>
         </div>
 
-        <p> Once click the timer, players have 3 minutes to place chess pieces. </p>
+        <!-- <p> Once click the timer, players have 3 minutes to place chess pieces. </p>
         <button onclick="myFunction()"> Start the timer</button>
         <br>
         
@@ -82,7 +104,11 @@
             function myFunction() {
                 setTimeout(function(){alert("Time out!")},180000);
             }
-        </script>
+        </script> -->
+        <div id="countdown" style="margin-left: 930px;"></div>
+        <script src="time.js"></script>
+
+
 
         <script type="text/javascript">
             var closePopup = document.getElementById("popupclose");
@@ -107,5 +133,9 @@
         <div>
             <button id="restart" onclick="window.location.reload();">Restart</button>
         </div>
+
+        <div id="secondtimer" style="margin-left: 930px;"></div>
+        <script src="time1.js"></script>
+
     </body>
 </html>
