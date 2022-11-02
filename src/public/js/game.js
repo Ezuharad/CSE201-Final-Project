@@ -1,3 +1,5 @@
+// Game ID for identifying game instance
+let gameId = 10000;
 //True is black turn, and false is white turn.
 let blackPiece = true;
 // True if it is our turn, false otherwise
@@ -82,10 +84,10 @@ function placePiece(i, j) {
 	}
 	if(WinJudge(i, j)) {  // Win judgement
 		if(myTurn) {
-			window.location.assign('winner.html');
+			window.location.href = 'winner.html';
 		}
 		else {
-			window.location.assign('loser.html');
+			window.location.href = 'loser.html';
 		}
 	}
 
@@ -140,7 +142,7 @@ function pullPiece() {
 function pushPiece(i, j) {
 	let xhttp = new XMLHttpRequest();
 	let url = '/pushPiece';  // The POST url
-	let params = '/' + i + '|' + j;  // Parameters are packaged by the client in x|y format
+	let params = '/' + i + '|' + j + '|' + gameId;  // Parameters are packaged by the client in x|y format
 	xhttp.open('POST', url + params, true);
 	xhttp.onreadystatechange = function() {
 		if(xhttp.readyState == 4 && xhttp.status == 200) {
