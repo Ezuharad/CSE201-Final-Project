@@ -1,11 +1,22 @@
+import {cleanPre} from "./canvas.js";
+import {drawChessBoard} from "./canvas.js";
+import {drawOutline} from "./canvas.js";
+import {oneStep} from "./canvas.js";
+import {setPre} from "./canvas.js";
+
+import {chessBoard} from "./chessBoard.js";
+
+import {pullPiece} from "./serverRequests.js";
+import {pushPiece} from "./serverRequests.js";
+
 // Game ID for identifying game instance
 let gameId = 10000;
 //True is black turn, and false is white turn.
 let blackPiece = true;
 // True if it is our turn, false otherwise
 let myTurn = true;
-//instance of chessBoard status
-let chessBoard = [];
+
+let board = new chessBoard();
 
 /**
  * Create a Nested Array to record the chessBoard status, all values will set as 0 at the first.
@@ -15,18 +26,15 @@ let chessBoard = [];
  * 3 means a black piece here,
  * 4 means a white piece here.
  */
+
+/*
 for (let i = 0; i < 15; i++) {
 	chessBoard[i] = [];
 	for (let j = 0; j < 15; j++) {
 		chessBoard[i][j] = 0;
 	}
 }
-//instance of x, y coordinate of the current preview piece
-let preX = null;
-let preY = null;
-
-let chess = null;
-let context = null;
+*/
 
 // Regularly call server for updated pieces
 setInterval(pullPiece, 500);
@@ -47,19 +55,18 @@ function clickToPlacePiece(e) {
 	let j = Math.floor(y / 30);
 
 	// If not piece already here
-	if (chessBoard[i][j] == 0) {
+	if (board.getPiece(i, j) == 0) {
 		//clean the useless preview pieces before place a new one
-		cleanPre(preX, preY);
+		cleanPre();
 		//place a new preview piece
-		preStep(i, j);
+		drawOutline(i, j);
 		//set the x, y coordinate of the current preview piece
-		preX = i;
-		preY = j;
+		setPre(i, j);
 	}
-	else if(chessBoard[i][j] == 1 || chessBoard[i][j] == 2){
+	else if(board.getPiece(i, j) == 1 || board.getPiece(i, j) == 2){
 		pushPiece(i, j); // Push piece to server
-		cleanPre(preX, preY); // clean the useless preview piece
-		placePiece(i, j);
+		cleanPre(); // clean the useless preview piece
+		board.setPiece(i, j);
 		myTurn = false;
 	}
 }
@@ -94,12 +101,14 @@ function placePiece(i, j) {
 }
 
 // Regex matching for pullPiece
-const reg = /[0-9]?[0-9]|[0-9]?[0-9]/;
+
+// const reg = /[0-9]?[0-9]|[0-9]?[0-9]/;
 
 /**
  * Pulls a piece from the nodejs server using ajax. Called every half second by the 
  * client.
  */
+/*
 function pullPiece() {
 	let xhttp = new XMLHttpRequest();
 	let url = '/pullPiece';  // The GET url
@@ -132,6 +141,7 @@ function pullPiece() {
 	}
 	xhttp.send();
 }
+*/
 
 /**
  * Pushes the passed piece to the nodejs server. Called when a player finishes 
@@ -139,6 +149,8 @@ function pullPiece() {
  * @param {*} i The x coordinate of the placed piece
  * @param {*} j The y coordinate of the placed piece
  */
+
+/*
 function pushPiece(i, j) {
 	let xhttp = new XMLHttpRequest();
 	let url = '/pushPiece';  // The POST url
@@ -150,10 +162,13 @@ function pushPiece(i, j) {
 	}
 	xhttp.send(params); // Send the xhttp object with the parameters
 }
+*/
 
 /**
  * This function will draw a 15*15 blank game board by black lines
  */
+
+/*
 function drawChessBoard() {
 	//necessary instances for drawing stuffs on canvas.
 	chess = document.getElementById("chess");
@@ -169,6 +184,8 @@ function drawChessBoard() {
 		context.stroke();
 	}
 }
+*/
+
 /**
  * preStep() function will place a red circle preview piece on the game board to let players can clearly see the position that
  * they want to place a piece. Black preview piece and White preview piece do not have visual differences. 
@@ -177,7 +194,9 @@ function drawChessBoard() {
  * @param {*} i is the value of the x-coordinate
  * @param {*} j is the value of the y-coordinate
  */
-function preStep(i, j) {
+
+/*
+function drawOutline(i, j) {
 	context.beginPath();
 	context.arc(15 + i * 30, 15 + j * 30, 11, 0, 2 * Math.PI); // draw a preview piece
 	context.closePath();
@@ -195,6 +214,7 @@ function preStep(i, j) {
 		chessBoard[i][j] = 2; //if the turn is white, set the board status to 2
 	}
 }
+*/
 
 /**
  * oneStep() function will place a real piece on the game board
@@ -203,6 +223,8 @@ function preStep(i, j) {
  * @param {*} i is the value of the x-coordinate
  * @param {*} j is the value of the y-coordinate
  */
+
+/*
 function oneStep(i, j) {
 	context.beginPath();
 	context.arc(15 + i * 30, 15 + j * 30, 13, 0, 2 * Math.PI); // draw a real piece
@@ -226,6 +248,7 @@ function oneStep(i, j) {
 	context.fillStyle = gradient; //change the fill color
 	context.fill(); //fill the real piece
 }
+*/
 
 /**
  * cleanPre() function will clean up the current preview piece, and set the board status to 0.
@@ -233,6 +256,8 @@ function oneStep(i, j) {
  * @param {*} X is the value of the current preview piece x-coordinate
  * @param {*} Y is the value of the current preview piece y-coordinate
  */
+
+/*
 function cleanPre(X, Y) {
 	//if the current preview piece exists
 	if (X != null && Y != null) {
@@ -280,6 +305,8 @@ function cleanPre(X, Y) {
 		preY = null;
 	}
 }
+*/
+
 /**
  * WinJudge function will determine win based on the coordinates of the last piece placement.
  * With five pieces of the same color on any horizontal, vertical, or diagonal line, the corresponding color wins
