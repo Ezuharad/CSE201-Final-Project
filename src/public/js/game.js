@@ -1,7 +1,9 @@
+// Game ID for identifying game instance
+let gameId = 10000;
 //True is black turn, and false is white turn.
 let blackPiece = true;
 // True if it is our turn, false otherwise
-let myTurn;
+let myTurn = true;
 //instance of chessBoard status
 let chessBoard = [];
 
@@ -35,6 +37,9 @@ setInterval(pullPiece, 500);
  * @param {*} e 
  */
 function clickToPlacePiece(e) {
+	if(!myTurn) {  // Return if it is not the players turn
+		return;
+	}
 	let x = e.offsetX;
 	let y = e.offsetY;
 
@@ -55,6 +60,7 @@ function clickToPlacePiece(e) {
 		pushPiece(i, j); // Push piece to server
 		cleanPre(preX, preY); // clean the useless preview piece
 		placePiece(i, j);
+		myTurn = false;
 	}
 }
 
@@ -69,23 +75,22 @@ function placePiece(i, j) {
 	if (blackPiece) {  //If there is already a black preview piece here
 		//place a black piece here
 		oneStep(i, j);
-		//Win judgement
-		if (WinJudge(i, j)) {
-			//This part just use to test the function
-			alert("Black Wins!");
-		}
 		blackPiece = false;  // Swap color
 	} //If there is already a white preview piece here
 	else {
 		//place a white piece here
 		oneStep(i, j);
-		//Win judgement
-		if (WinJudge(i, j)) {
-			//This part just use to tese the function
-			alert("White Wins!");
-		}
 		blackPiece = true;  // Swap color
 	}
+	if(WinJudge(i, j)) {  // Win judgement
+		if(myTurn) {
+			window.location.href = 'winner.html';
+		}
+		else {
+			window.location.href = 'loser.html';
+		}
+	}
+
 }
 
 // Regex matching for pullPiece
@@ -122,6 +127,7 @@ function pullPiece() {
 
 			// Place the piece for the user to see
 			placePiece(pos[0], pos[1]);
+			myTurn = true;
 		}
 	}
 	xhttp.send();
@@ -136,7 +142,7 @@ function pullPiece() {
 function pushPiece(i, j) {
 	let xhttp = new XMLHttpRequest();
 	let url = '/pushPiece';  // The POST url
-	let params = '/' + i + '|' + j;  // Parameters are packaged by the client in x|y format
+	let params = '/' + i + '|' + j + '|' + gameId;  // Parameters are packaged by the client in x|y format
 	xhttp.open('POST', url + params, true);
 	xhttp.onreadystatechange = function() {
 		if(xhttp.readyState == 4 && xhttp.status == 200) {
