@@ -10,13 +10,18 @@ const PORT = 9999
 // Grant access to public directory
 app.use(express.static('public'));
 
+const gameIDReg = /[1-9][0-9]{4}/
 /**
  * pullPiece GET route. Sends the user the data in the data directory.
  * Throws an error and shuts down the server if an error ocurrs while 
  * reading the file.
  */
-app.get('/pullPiece', (req, res) => {
-    fs.readFile(dataDir + '10000.txt', 'utf8', function(error, data) {
+app.get('/pullPiece/:gameID', (req, res) => {
+    let gameID = req.params.gameID;
+    if(!gameID.match(gameIDReg)) {
+        return;
+    }
+    fs.readFile(dataDir + gameID + '.txt', 'utf8', function(error, data) {
         if(error) {
             res.sendStatus(500);
             console.log('An error ocurred in pullPiece:');
@@ -28,7 +33,7 @@ app.get('/pullPiece', (req, res) => {
 })
 
 // Regex matching for pushPiece
-const reg = /[0-9]?[0-9]|[0-9]?[0-9]|[0-9]{5}/;
+const pushPieceReg = /[0-9]?[0-9]|[0-9]?[0-9]|[1-8][0-9]{4}/;
 
 /**
  * pushPiece POST route. Updates data in the data directory.
@@ -37,11 +42,12 @@ const reg = /[0-9]?[0-9]|[0-9]?[0-9]|[0-9]{5}/;
  */
 app.post('/pushPiece/:pos', (req, res)  => {
     let pos = req.params.pos;
+    console.log(pos);
     if(pos == null) {
         console.log('A null piece was received in pushPiece');
         return;
     }
-    if(!pos.match(reg)) {
+    if(!pos.match(pushPieceReg)) {
         console.log('A malformed piece was received in pushPiece');
         return;
     }
@@ -65,9 +71,30 @@ app.post('/pushPiece/:pos', (req, res)  => {
     res.send(null);
 })
 
-app.get('startGame', (req, res) => {
-    let gameId = 10000 + Math.max(89999 * Math.random())
-    res.send(gameId);
+let nextID = 10000
+let needsPartner = true;
+
+app.get('/startGame', (req, res) => {
+    if(nextID == 99999) {  // Prevent an overflow error
+        return;
+    }
+    fs.writeFile(dataDir + nextID + '.txt', '', error => {
+        if(error) {
+            res.sendStatus(500);
+            console.log('An error ocurred in startGame:');
+            console.log(error);
+            throw error;
+        }
+    });
+    res.send(200, nextID);
+    
+    if(needsPartner) {  // Send a new ID for every other player
+        needsPartner = false;
+    }
+    else {
+        nextID += 1;
+        needsPartner = true;
+    }
 })
 
 // Start the app on the specified port

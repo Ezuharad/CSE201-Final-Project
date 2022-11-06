@@ -1,5 +1,6 @@
 // Game ID for identifying game instance
-let gameId = 10000;
+let gameId;
+getGameID();
 //True is black turn, and false is white turn.
 let blackPiece = true;
 // True if it is our turn, false otherwise
@@ -94,7 +95,7 @@ function placePiece(i, j) {
 }
 
 // Regex matching for pullPiece
-const reg = /[0-9]?[0-9]|[0-9]?[0-9]/;
+const pullPieceRegex = /[0-9]?[0-9]|[0-9]?[0-9]/;
 
 /**
  * Pulls a piece from the nodejs server using ajax. Called every half second by the 
@@ -103,14 +104,15 @@ const reg = /[0-9]?[0-9]|[0-9]?[0-9]/;
 function pullPiece() {
 	let xhttp = new XMLHttpRequest();
 	let url = '/pullPiece';  // The GET url
-	xhttp.open('GET', url, true);
+	let params = '/' + gameId;
+	xhttp.open('GET', url + params, true);
 	xhttp.onreadystatechange = function() {
 		if(this.readyState == 4 && this.status == 200) {
 			// Unpackage the parameters
 			if(this.responseText == null) {  // Do nothing if the response does not exist
 				return;
 			}
-			if(!this.responseText.match(reg)) {  // Do nothing if the response is malformed
+			if(!this.responseText.match(pullPieceRegex)) {  // Do nothing if the response is malformed
 				return;
 			}
 
@@ -142,12 +144,12 @@ function pullPiece() {
 function pushPiece(i, j) {
 	let xhttp = new XMLHttpRequest();
 	let url = '/pushPiece';  // The POST url
-	let params = '/' + i + '|' + j + '|' + gameId;  // Parameters are packaged by the client in x|y format
+	let params = '/' + i + '|' + j + '|' + gameId;  // Parameters are packaged by the client in x|y|gameID format
 	xhttp.open('POST', url + params, true);
-	xhttp.onreadystatechange = function() {
-		if(xhttp.readyState == 4 && xhttp.status == 200) {
-		}
-	}
+	//xhttp.onreadystatechange = function() {
+	//	if(xhttp.readyState == 4 && xhttp.status == 200) {
+	//	}
+	//}
 	xhttp.send(params); // Send the xhttp object with the parameters
 }
 
@@ -225,6 +227,30 @@ function oneStep(i, j) {
 	}
 	context.fillStyle = gradient; //change the fill color
 	context.fill(); //fill the real piece
+}
+
+const startGameRegex = /[1-9][0-9]{4}/;
+
+function getGameID() {
+	let xhttp = new XMLHttpRequest();
+	let url = '/startGame';  // The GET url
+	xhttp.open('GET', url, true);
+	xhttp.onreadystatechange = function() {
+		if(this.readyState == 4 && this.status == 200) {
+			// Unpackage the parameters
+			if(this.responseText == null) {  // Do nothing if the response does not exist
+				throw 'No gameID was received from the server!'
+			}
+			if(!this.responseText.match(startGameRegex)) {  // Do nothing if the response is malformed
+				throw 'A malformed gameID was received from the server!';
+			}
+
+			console.log('Received gameID :' + this.responseText);
+
+			gameId = this.responseText;
+		}
+	}
+	xhttp.send();
 }
 
 /**
