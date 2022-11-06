@@ -231,6 +231,9 @@ function oneStep(i, j) {
 
 const startGameRegex = /[1-9][0-9]{4}/;
 
+/**
+ * getGameID() gets the gameID for the current game.
+ */
 function getGameID() {
 	let xhttp = new XMLHttpRequest();
 	let url = '/startGame';  // The GET url

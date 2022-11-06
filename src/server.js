@@ -74,6 +74,10 @@ app.post('/pushPiece/:pos', (req, res)  => {
 let nextID = 10000
 let needsPartner = true;
 
+/**
+ * startGame GET route. Gives the client a gameID, and writes a new file in the Data directory 
+ * so that pullPiece() doesn't cause issues.
+ */
 app.get('/startGame', (req, res) => {
     if(nextID == 99999) {  // Prevent an overflow error
         return;
