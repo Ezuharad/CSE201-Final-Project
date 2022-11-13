@@ -33,7 +33,7 @@ app.get('/pullPiece/:gameID', (req, res) => {
 })
 
 // Regex matching for pushPiece
-const pushPieceReg = /[0-9]?[0-9]|[0-9]?[0-9]|[1-8][0-9]{4}/;
+const pushPieceReg = /[0-1]?[0-9]\|[0-1]?[0-9]\|[1-9][0-9]{4}/;
 
 /**
  * pushPiece POST route. Updates data in the data directory.
@@ -47,8 +47,23 @@ app.post('/pushPiece/:pos', (req, res)  => {
         console.log('A null piece was received in pushPiece');
         return;
     }
-    if(!pos.match(pushPieceReg)) {
+    if(!pos.match(pushPieceReg) && !pos.match(/w\|[1-8][0-9]{4}/)) {
         console.log('A malformed piece was received in pushPiece');
+        return;
+    }
+
+    if(!pos.match(pushPieceReg)) {
+        let logText = pos.split('|');
+        console.log('A player has won game ' + logText[1]);
+
+        fs.writeFile(dataDir + logText[1] + '.txt', 'w', error => {
+            if(error) {
+                res.sendStatus(500);
+                console.log('An error ocurred in pushPiece:');
+                console.log(error);
+            }
+        })
+        res.send(null)
         return;
     }
     
@@ -63,7 +78,6 @@ app.post('/pushPiece/:pos', (req, res)  => {
             res.sendStatus(500);
             console.log('An error ocurred in pushPiece:');
             console.log(error);
-            throw error;
         }
     })
 

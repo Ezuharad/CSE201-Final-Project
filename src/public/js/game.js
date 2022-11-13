@@ -30,7 +30,7 @@ let chess = null;
 let context = null;
 
 // Regularly call server for updated pieces
-setInterval(pullPiece, 500);
+let pullInterval = setInterval(pullPiece, 500);
 
 /**
  * This function will be called whenever a player clicks the board to place a piece.
@@ -65,6 +65,26 @@ function clickToPlacePiece(e) {
 	}
 }
 
+function loseGame() {
+	let xhttp = new XMLHttpRequest();
+	let url = '/pushPiece';  // The POST url
+	let params = '/w|' + gameId;  // Parameters are packaged by the client in w|gameID format
+	xhttp.open('POST', url + params, true);
+	xhttp.send(params); // Send the xhttp object with the parameters
+
+	clearInterval(pullInterval);  // Prvent showing winscreen
+
+	xhttp.onreadystatechange = function() {  // Once the server responds, send the user to shadow realm
+		if(this.readyState == 4 && this.status == 200) {
+			window.location.href = "loser.html";
+		}
+	}
+}
+
+function winGame() {
+	window.location.href = "winner.html";  // Send user to winscreen
+}
+
 /**
  * This function will call preStep() and oneStep() to place preview pieces and real pieces on the game board.
  * Called by clickToPlacePiece()
@@ -95,7 +115,7 @@ function placePiece(i, j) {
 }
 
 // Regex matching for pullPiece
-const pullPieceRegex = /[0-9]?[0-9]|[0-9]?[0-9]/;
+const pullPieceRegex = /[0-9]?[0-9]\|[0-9]?[0-9]\|[1-9][0-9]{4}/;
 
 /**
  * Pulls a piece from the nodejs server using ajax. Called every half second by the 
@@ -113,7 +133,10 @@ function pullPiece() {
 				return;
 			}
 			if(!this.responseText.match(pullPieceRegex)) {  // Do nothing if the response is malformed
-				return;
+				if(this.responseText.match(/w/)) {  // Win game if response is 'w'
+					winGame();
+					return;
+				}
 			}
 
 			let pos = this.responseText.split('|');
