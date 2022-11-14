@@ -66,17 +66,19 @@ function clickToPlacePiece(e) {
 }
 
 function loseGame() {
-	let xhttp = new XMLHttpRequest();
-	let url = '/pushPiece';  // The POST url
-	let params = '/w|' + gameId;  // Parameters are packaged by the client in w|gameID format
-	xhttp.open('POST', url + params, true);
-	xhttp.send(params); // Send the xhttp object with the parameters
-
-	clearInterval(pullInterval);  // Prvent showing winscreen
-
-	xhttp.onreadystatechange = function() {  // Once the server responds, send the user to shadow realm
-		if(this.readyState == 4 && this.status == 200) {
-			window.location.href = "loser.html";
+	if(confirm('You will lose the Game. Are you sure?')){
+		let xhttp = new XMLHttpRequest();
+		let url = '/pushPiece';  // The POST url
+		let params = '/w|' + gameId;  // Parameters are packaged by the client in w|gameID format
+		xhttp.open('POST', url + params, true);
+		xhttp.send(params); // Send the xhttp object with the parameters
+		
+		clearInterval(pullInterval);  // Prvent showing winscreen
+		
+		xhttp.onreadystatechange = function() {  // Once the server responds, send the user to shadow realm
+			if(this.readyState == 4 && this.status == 200) {
+				window.location.href = "loser.html";
+			}
 		}
 	}
 }
