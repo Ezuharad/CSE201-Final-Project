@@ -36,12 +36,12 @@ function updateCountdown() {
     countdownEL.innerHTML = `${minutes}:${seconds}`;
     time--;
     if(time < 1){
-        console.log('结束');
+        window.location.href = "loser.html"; // Lose the game if time is zero
         return;
     }
     if(timeState){
         setTimeout(function(){
             updateCountdown();
-        }, 1000);
+        }, 1);
     }
 }
