@@ -7,6 +7,7 @@ let blackPiece = true;
 let myTurn = true;
 //instance of chessBoard status
 let chessBoard = [];
+let prevVal = false;
 
 /**
  * Create a Nested Array to record the chessBoard status, all values will set as 0 at the first.
@@ -56,11 +57,17 @@ function clickToPlacePiece(e) {
 		//set the x, y coordinate of the current preview piece
 		preX = i;
 		preY = j;
+		if(!setTimeState){
+			updateCountdown();
+			setTimeState = true;
+		}
 	}
 	else if(chessBoard[i][j] == 1 || chessBoard[i][j] == 2){
 		pushPiece(i, j); // Push piece to server
 		cleanPre(preX, preY); // clean the useless preview piece
 		placePiece(i, j);
+		prevVal = [i, j];
+		timeState = false;
 		myTurn = false;
 	}
 }
@@ -140,10 +147,18 @@ function pullPiece() {
 			}
 
 			let pos = this.responseText.split('|');
+			if(pos && pos[1]){
+				if(!prevVal || (prevVal && (prevVal[0]+''+prevVal[1]) != (pos[0]+''+pos[1]))){
+					prevVal = [pos[0], pos[1]];
+					timeState = true;
+					updateCountdown();
+					setTimeState = true;
+				}
+			}
 			if(pos[0] > 14 || pos[1] > 14 || pos[0] < 0 || pos[1] < 0) {  // Verify indices
 				return;
 			}
-			if(chessBoard[pos[0]][pos[1]] > 2) {  // Do nothing if the piece already exists
+			if(chessBoard.length && chessBoard[pos[0]][pos[1]] > 2) {  // Do nothing if the piece already exists
 				return;
 			}
 
@@ -274,6 +289,7 @@ function getGameID() {
 			console.log('Received gameID :' + this.responseText);
 
 			gameId = this.responseText;
+			document.title = gameId;
 		}
 	}
 	xhttp.send();
