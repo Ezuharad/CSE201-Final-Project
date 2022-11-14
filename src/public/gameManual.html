@@ -1,20 +1,68 @@
 <!DOCTYPE html>
 <html lang="en-US">
     <head>
-        <meta charset="utf-8" />
+        <meta charset="utf-8" >
         <title>Gamemanual Page</title>
+        <link type="text.css" rel="stylesheet" href="styles/styles.css">
+        <style type="text/css">
+            body{
+                background-image: url(images/gameManualPage2.jpg);
+                background-size: cover;
+                background-attachment: fixed;
+                background-color: aliceblue;
+            }
+
+            .titleFont{
+                font-style:italic;
+                font-weight: bold;
+                font-size: 80px;
+                font-family: 'Courier New', Courier, monospace;
+            }
+
+            .content-box {
+                background-color: aliceblue;
+                opacity: 0.9;
+                border: 1px solid whitesmoke;
+                width: auto;
+                max-width: 980px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .contentFont{
+                font-style:italic;
+                font-weight: bold;
+                font-size: 20px;
+                font-family: 'Courier New', Courier, monospace;
+            }
+        </style>
     </head>
     <body>
-        <h1 style="text-align:center;font-size:450%;">
-            <b>Game Rules</b>
-        </h1>
-        <p>
-            <b>How to play?</b></br>
-            Players alternate turns placing a stone of their color on an empty intersection of gamed board, and black piece will go first.<br/>
-            <a title="Click this link to learn more about the game." href="https://www.youtube.com/watch?v=-KD743yNDHc" target="_blank"> Click this link to learn more about the game.</a><br>
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/-KD743yNDHc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
-            <b>How to win?</b></br>
-            The player wins the game if they are able to get five of their pieces in a row (horizontally, vertically, or diagonally) before their timer runs out.</br>
-        </p> 
+        <div class="titleFont">
+            <h1 style="text-align:center;font-size:200%;">
+                <b>Game Rules</b>
+            </h1>
+        </div>
+        <div class="content-box">
+            <div class="contFont">
+                <p>
+                    <b>1. How to play?</b></br>
+                    <p>shape of the chessboard is close to a square, with a size of 15×15. There are 225 intersection points. The distance between the adjacent two intersection points is about 2.5 cm in the vertical line and 2.4 cm in the horizontal line.</p> 
+                    <p>Round: Both sides take a move, which is called a round.</p>
+                    <p>Black: The abbreviation of the side holding black.</p>
+                    <p>White: The abbreviation of the side holding White.</p>
+                    Players alternate turns placing a stone of their color on an empty intersection of gamed board, and black piece will go first.<br>
+                    <a title="Click this link to learn more about the game." href="https://www.youtube.com/watch?v=-KD743yNDHc" target="_blank"> Click this link to learn more about the game.</a><br>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/-KD743yNDHc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+                    <b>2. How to win?</b><br>
+                    <p>The player wins the game if they are able to get five of their pieces in a row (horizontally, vertically, or diagonally) before their timer runs out.</p><br>
+                    <b>3. Interesting historical origin</b><br>
+                    <p>According to legend, Gobang originated in the period of Emperor Yao more than 4,000 years ago. It has a longer history than Go. It may have been before Yao created Go. It's exactly the same as Go. There are also legends that Gobang was originally popular in ethnic minority areas, and then gradually evolved into Go and spread throughout the descendants of Yan and Huang.</p><br>
+                </p>
+                <button> 
+                    <a href="index.html">Back to index</a>
+                </button>
+            </div>
+        </div>
     </body>
 </html>

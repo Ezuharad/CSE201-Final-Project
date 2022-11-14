@@ -72,15 +72,18 @@ function clickToPlacePiece(e) {
 	}
 }
 
+/**
+ * This function causes the loser to lose the game
+*/
 function loseGame() {
 	let xhttp = new XMLHttpRequest();
 	let url = '/pushPiece';  // The POST url
 	let params = '/w|' + gameId;  // Parameters are packaged by the client in w|gameID format
 	xhttp.open('POST', url + params, true);
 	xhttp.send(params); // Send the xhttp object with the parameters
-
+	
 	clearInterval(pullInterval);  // Prvent showing winscreen
-
+	
 	xhttp.onreadystatechange = function() {  // Once the server responds, send the user to shadow realm
 		if(this.readyState == 4 && this.status == 200) {
 			window.location.href = "loser.html";
@@ -88,6 +91,9 @@ function loseGame() {
 	}
 }
 
+/**
+ * This function will cause the caller to win
+ */
 function winGame() {
 	window.location.href = "winner.html";  // Send user to winscreen
 }
@@ -112,10 +118,10 @@ function placePiece(i, j) {
 	}
 	if(WinJudge(i, j)) {  // Win judgement
 		if(myTurn) {
-			window.location.href = 'winner.html';
+			winGame();
 		}
 		else {
-			window.location.href = 'loser.html';
+			loseGame();
 		}
 	}
 

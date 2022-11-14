@@ -42,7 +42,7 @@
                 <h2 style="font-size: 30px;font-family: monospace; width: 100%; display: flex; align-items: center; justify-content: center;" >00:00</h2>
             </div>
         </section>    
-        <script src="time.js"></script>
+        <script src="js//time.js"></script>
 
 
 
@@ -66,8 +66,8 @@
 
         <canvas onclick="clickToPlacePiece(event);" id="chess" width="450px" height="450px" style="background-color: green;"></canvas>
         <div>
-            <button id="restart" style="font-size:115%; background:#0cbbf0;" onclick="window.location.reload();">Restart</button>
-            <button id="forfeit" style="font-size:115%; background:#0cbbf0;" onclick="loseGame();">Forfeit</button>
+            <button id="forfeit" style="font-size:115%; background:#0cbbf0;" 
+            onclick="if(confirm('You will lose the game if you continue. Are you sure?')) loseGame();">Forfeit</button>
         </div>
 
     </body>
