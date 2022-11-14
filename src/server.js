@@ -96,17 +96,17 @@ app.get('/startGame', (req, res) => {
     if(nextID == 99999) {  // Prevent an overflow error
         return;
     }
-    fs.writeFile(dataDir + nextID + '.txt', '', error => {
-        if(error) {
-            res.sendStatus(500);
-            console.log('An error ocurred in startGame:');
-            console.log(error);
-            throw error;
-        }
-    });
     res.send(200, nextID);
     
     if(needsPartner) {  // Send a new ID for every other player
+        fs.writeFile(dataDir + nextID + '.txt', '', error => {
+            if(error) {
+                res.sendStatus(500);
+                console.log('An error ocurred in startGame:');
+                console.log(error);
+                throw error;
+            }
+        });
         needsPartner = false;
     }
     else {
