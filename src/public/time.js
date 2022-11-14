@@ -1,14 +1,23 @@
-const startingMinutes = 5;
-let time = startingMinutes * 60;
+const timeCount = document.querySelector('h2');
+let timeSec = 600;
 
-const countdownEL = document.getElementById('countdown');
-setInterval(updateCountdown, 1000);
+displayTime(timeSec);
 
-function updateCountdown() {
-    const minutes = Math.floor(time / 60);
-    let seconds = time % 60;
+const countDown = setInterval(()=>{
+    timeSec --;
+    displayTime(timeSec);
+    if(timeSec<=0 || timeSec < 1) {
+        endTime();
+        clearInterval(countDown);
+    }
+},1000)
 
-    seconds = seconds < 10 ? '0' + seconds : seconds;
-    countdownEL.innerHTML = `${minutes}:${seconds}`;
-    time--;
+function displayTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const second = Math.floor(seconds % 60);
+    timeCount.innerHTML =`${minutes<10 ? '0' : ''}${minutes}:${second<10?'0':''}${second}`;
+}
+
+function endTime(){
+    timeCount.innerHTML = 'TIME OUT';
 }

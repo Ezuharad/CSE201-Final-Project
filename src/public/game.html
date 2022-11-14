@@ -6,11 +6,16 @@
         <link rel="stylesheet" type="text/css" href="styles//styles.css">
         <link rel="icon" type="image/x-icon" href="images/favicon-16x16.png">
         <title>Five-in-a-Row</title>
+        <style>
+            body {
+              background-image: url('images/background.jpg');
+            }
+            </style>
     </head>
     <body onload="drawChessBoard();">
         <div id="maincontent">
-            <h1 style="text-align: center;font-size:300%;">Wuziqi main page</h1>
-            <button id="button" style="font-size:85%;">Game Manual</button>
+            <h1 style="text-align: center;font-size:350%; font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">Five-in-a-Row</h1>
+            <button id="button" style="font-size:115%;">Game Manual</button>
             <br>
         </div>
         <div id="overlay"></div>
@@ -31,7 +36,12 @@
             </div>
         </div>
 
-        <div id="countdown" style="margin-left: 930px;"></div>
+        <!-- <div id="countdown" style="margin-left: 930px;"></div> -->
+        <section>
+            <div class = "container">
+                <h2 style="font-size: 30px;font-family: monospace; width: 100%; display: flex; align-items: center; justify-content: center;" >00:00</h2>
+            </div>
+        </section>    
         <script src="time.js"></script>
 
 
@@ -56,8 +66,8 @@
 
         <canvas onclick="clickToPlacePiece(event);" id="chess" width="450px" height="450px" style="background-color: green;"></canvas>
         <div>
-            <button id="restart" onclick="window.location.reload();">Restart</button>
-            <button id="forfeit" onclick="loseGame();">Forfeit</button>
+            <button id="restart" style="font-size:115%; background:#0cbbf0;" onclick="window.location.reload();">Restart</button>
+            <button id="forfeit" style="font-size:115%; background:#0cbbf0;" onclick="loseGame();">Forfeit</button>
         </div>
 
     </body>
