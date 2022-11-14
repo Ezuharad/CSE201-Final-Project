@@ -1,5 +1,5 @@
 const timeCount = document.querySelector('h2');
-let timeSec = 600;
+let timeSec = 1200;
 
 displayTime(timeSec);
 
