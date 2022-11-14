@@ -42,6 +42,6 @@ function updateCountdown() {
     if(timeState){
         setTimeout(function(){
             updateCountdown();
-        }, 1);
+        }, 1000);
     }
 }
