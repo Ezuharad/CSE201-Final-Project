@@ -1,34 +1,94 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en-US">
     <head>
-        <title>Five-in-a-Row</title>
-        <link rel="icon" type="image/x-icon" href="images/favicon-16x16.png">
+        <meta charset="utf-8">
+        <title>Setting background</title>
+        <link rel="stylesheet" href="styles/styles.css">
     </head>
+    <body background="img/251.jpg">
+        <div class="boxl"></div>
+        <h1>Setting background</h1>
+    </body>
+</html> -->
+<html lang="en-US">
+    <head>
+        <meta charset="UTF-8">
+        <title>Five-in-a-Row</title>
+        <link type="text.css" rel="stylesheet" href="styles/styles.css">
+        <style type="text/css">
+            body{
+                background-image: url(252.jpg);
+                background-size: cover;
+                background-attachment: fixed;
+                background-color: aliceblue;
+            }
 
+            .btnTest {
+                background-size: 30;
+                background: #ce7e00;
+                background-image: -webkit-linear-gradient(top, #ce7e00, #ffe599);
+                background-image: -moz-linear-gradient(top, #ce7e00, #ffe599);
+                background-image: -ms-linear-gradient(top, #ce7e00, #ffe599);
+                background-image: -o-linear-gradient(top, #ce7e00, #ffe599);
+                background-image: linear-gradient(to bottom, #ce7e00, #ffe599);
+                -webkit-border-radius: 28;
+                -moz-border-radius: 28;    
+                border-radius: 28px;
+                text-shadow: 0px 0px 0px #ce7e00;
+                -webkit-box-shadow: 0px 1px 3px #f49807;
+                -moz-box-shadow: 0px 1px 3px #f49807;
+                box-shadow: 0px 1px 3px #f49807;
+                font-family: Courier New;
+                color: white;
+                font-size: 30px;
+                padding: 10px 20px 10px 20px;
+                border: solid black 2px;
+                text-decoration: none;
+            }
+  
+  .btnTest:hover {
+    background: #f3f6f4;
+    background-image: -webkit-linear-gradient(top, #f3f6f4, #444444);
+    background-image: -moz-linear-gradient(top, #f3f6f4, #444444);
+    background-image: -ms-linear-gradient(top, #f3f6f4, #444444);
+    background-image: -o-linear-gradient(top, #f3f6f4, #444444);
+    background-image: linear-gradient(to bottom, #f3f6f4, #444444);
+    text-decoration: none;
+  }
+
+.titleFont{
+    font-style:italic;
+    font-weight: bold;
+    font-size: 100px;
+    font-family: 'Courier New', Courier, monospace;
+}
+        </style>
+    </head>
     <body>
-        <br>
-        <br>
-        <br>
-        <h1 style="text-align:center;font-size:450%;">
-            <b>Five-in-a-row</b>
-            <hr color = "red">
-        </h1>
-        <h2 style="text-align: center;font-size:100%;">
-            <a href="game.html"> 1. Start!</a>
-            <hr color = "red" width="40%">
-        <br>
-        </h2>
-        <!-- <h1 style="text-align: center;font-size:100%;">
-            <a href="gameManual.html"> 2. Game Manual</a>
-            <hr color = "red" width="40%">
-        <br>
-        </h1> -->
-        <br>
-        <br>
-        <h3 style="text-align: center;font-size:100%;">
-            <a href="./credits.html"> 2. Credits</a>
-            <hr color = "red" width="40%">
-        <br>
-        </h3>
+            <br><br>
+            <div class="titleFont">
+                <h1 style="text-align: center;font-size:150%;">
+                    <b>Five-in-a-row</b>
+                </h1>
+            </div>
+            <br><br>
+            <h1 style="text-align: center;font-size:100%;">
+                    <button class="btnTest btnTest:hover">
+                        <a href="game.html" >1. Start!</a>
+                    </button>
+ 
+            </h1>
+            <br><br>
+            <h1 style="text-align: center;font-size:100%;">
+                <button class="btnTest btnTest:hover">
+                    <a href="gameManual.html"> 2. Game Manual</a>
+                </button>
+            </h1>
+            <br><br>
+            <h1 style="text-align: center;font-size:100%;">
+                <button class="btnTest btnTest:hover">
+                    <a href="credits.html"> 3. Credits</a> 
+                </button>
+            </h1>     
     </body>
 </html>
