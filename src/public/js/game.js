@@ -95,7 +95,7 @@ function loseGame() {
  * This function will cause the caller to win
  */
 function winGame() {
-	window.location.href = "winner.html";  // Send user to winscreen
+	setTimeout(function() {	window.location.href = "winner.html";}, 1000);
 }
 
 /**
@@ -109,12 +109,10 @@ function placePiece(i, j) {
 	if (blackPiece) {  //If there is already a black preview piece here
 		//place a black piece here
 		oneStep(i, j);
-		blackPiece = false;  // Swap color
 	} //If there is already a white preview piece here
 	else {
 		//place a white piece here
 		oneStep(i, j);
-		blackPiece = true;  // Swap color
 	}
 	if(WinJudge(i, j)) {  // Win judgement
 		if(myTurn) {
@@ -123,6 +121,12 @@ function placePiece(i, j) {
 		else {
 			loseGame();
 		}
+	}
+	if(blackPiece) {
+		blackPiece = false;  // Swap color
+	}
+	else {
+		blackPiece = true;  // Swap color
 	}
 
 }

@@ -63,7 +63,7 @@ app.post('/pushPiece/:pos', (req, res)  => {
                 console.log(error);
             }
         })
-        res.send(null)
+        res.send(null);
         return;
     }
     
