@@ -95,7 +95,7 @@ function loseGame() {
  * This function will cause the caller to win
  */
 function winGame() {
-	setTimeout(function() {	window.location.href = "winner.html";}, 1000);
+	setTimeout(function() {	window.location.href = "winner.html";}, 2000);
 }
 
 /**
@@ -119,7 +119,7 @@ function placePiece(i, j) {
 			winGame();
 		}
 		else {
-			loseGame();
+			window.location.href = "loser.html";
 		}
 	}
 	if(blackPiece) {
