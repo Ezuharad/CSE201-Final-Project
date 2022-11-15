@@ -1,9 +1,9 @@
 # Installation Instructions for Windows 10
 ---
 ## Dependencies
-- Git 
+- Git. 
 Instructions for installing Git can be found [here](https://learn.microsoft.com/en-us/devops/develop/git/install-and-set-up-git). Be sure to add Git to PATH
-- Docker Hub 
+- Docker Hub. 
 Instructions for installing Docker Hub can be found [here](https://docs.docker.com/desktop/install/windows-install/). Be sure to add Docker to PATH
 
 ## Downloading and Starting the Program
