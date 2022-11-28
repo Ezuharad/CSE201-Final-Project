@@ -2,29 +2,143 @@
 <html lang="en-US">
     <head>
         <meta charset="utf-8"/>
-        <title> Game Credit</title>
+        <title>Credits</title>
+        <link rel="stylesheet" type="text/css" href="styles//styles.css">
+        <style type="text/css">
+            body{
+                background-image: url(images/gameManualPage2.jpg);
+                background-size: cover;
+                background-attachment: fixed;
+                background-color: aliceblue;
+            }
+            .titleFont{
+                font-style:italic;
+                font-weight: bold;
+                font-size: 80px;
+                font-family: 'Courier New', Courier, monospace;
+            }
+            .flip-container {
+                position:sticky;
+                width: 400px;
+                height: 200px;
+                border: 1px solid whitesmoke;
+                transform-style: preserve-3d;
+                perspective: 1000;
+                opacity: 0.9;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            /* flip the pane when hovered */
+            .flip-container:hover .flipper, .flip-container.hover .flipper {
+                transform: rotateY(180deg);
+            }
+            .flip-container, .front, .back {
+                
+                width: 400px;
+                height: 200px;
+            }
+            /* flip speed goes here */
+            .flipper {
+                transition: 0.6s;
+                transform-style: preserve-3d;
+                position: relative;
+            }
+            /* hide back of pane during swap */
+            .front, .back { 
+                backface-visibility: hidden;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+
+            /* front pane, placed above back */
+            .front {
+                background: white;
+                color: black;
+                z-index: 2;
+            }
+            /* back, initially hidden pane */
+            .back {
+                background: black;
+                color: white;
+                transform: rotateY(180deg);
+            }
+        </style>
     </head>
-<body>
-    <h1 style="text-align: center; color: rgb(30, 85, 236);">Player Credit</h1>
-    <hr>
-    <div style="width: 1300px; height: 300px;">
-    <h2><i>Player 1:</i></h1>
-    <br>
-    <h3>Win</h3>
-    <br>
-    <h3>Lose
-    </div>
-    <br>
-    <div style="width: 1300px; height: 300px;">
-    <h2><i>Player 2:</i></h1>
-    <br>
-    <h3>Win</h3>
-    <br>
-    <h3>Lose
-    </div>
-    <br>
-    <div style="text-align: center;">
-    <a href="index.html" style="font-size: 20px;"><b>Return to the main page</b></a>
-    </div>
-</body>
+    <body>
+        <div class="titleFont">
+            <h1 style="text-align:center;font-size:200%;">
+                <b>Credits</b>
+            </h1>
+        </div>
+        <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+            <div class="flipper">
+                <div class="front">
+                    <h1 style="text-align: center;font-size:100%;">
+                        Bolin Chen
+                    </h1>
+                </div>
+                <div class="back">
+                    <b>Web page write by HTML and CSS</b>
+                    <p>
+                        <br>Multiple Elements in HTML:Headings, Line breaks, inputs, comment, Hypertext, Attributes
+                        <br>Modify the interface and text and buttons through CSS
+
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+            <div class="flipper">
+                <div class="front">
+                    <h1 style="text-align: center;font-size:100%;">
+                        Shaobo Su
+                    </h1>
+                </div>
+                <div class="back">
+                    <b>Webpage design and JavaScript</b>
+                    <p>
+                        <br>Countdown timer in the webpage-based game.
+                        <br>Pop-up window in the webpages.
+                        <br>Webpage’s layout design.
+                        <br>JavaScript function.
+
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+            <div class="flipper">
+                <div class="front">
+                    <h1 style="text-align: center;font-size:100%;">
+                        Longze Li
+                    </h1>
+                </div>
+                <div class="back">
+                    <b>JavaScript Development</b>
+                    <p>
+                        <br>How to use JavaScript draw stuffs on the ‘Canvas’
+                        <br>How to set the color gradiently
+                        <br>How to use JavaScript to achieve the requirements
+
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="flip-container" ontouchstart="this.classList.toggle('hover');">
+            <div class="flipper">
+                <div class="front">
+                    <h1 style="text-align: center;font-size:100%;">
+                        Steven Chiacchira
+                    </h1>
+                </div>
+                <div class="back">
+                    <b>Server side Architecture</b>
+                    <p>
+                        <br>server creation
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
 </html>
