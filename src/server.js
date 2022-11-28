@@ -116,9 +116,11 @@ app.get('/startGame', (req, res) => {
 })
 
 // Start the app on the specified port
-app.listen(PORT, function(error) {
+let server = app.listen(PORT, function(error) {
     if(error) {
         console.log(error);
     }
     console.log('Express.js running on port ' + PORT);
 })
+
+module.exports = server;
